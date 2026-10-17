@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  <url>
+    <loc>https://quazard-global-hub.lovable.app/</loc>
+    <lastmod>2026-10-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://quazard-global-hub.lovable.app/photo_2026-10-17_03-13-49.jpg</image:loc>
+      <image:title>Quarzard Animal Gas Burner - Heavy Duty Singeing Tool</image:title>
+      <image:caption>Switch to Animal Gas Burner - The Only Healthier Option for Smoking Animals</image:caption>
+    </image:image>
+  </url>
+</urlset>
