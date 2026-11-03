@@ -14,16 +14,16 @@
   <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
   <meta name="theme-color" content="#0d1713">
 
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://quazard-global-hub.lovable.app/">
+  <!-- Canonical URL (self-referencing; update SITE_URL below to this site's live domain) -->
+  <link rel="canonical" href="https://quarzard-animal-gas-burner.netlify.app/">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="product">
-  <meta property="og:site_name" content="Quazard Global Limited">
-  <meta property="og:url" content="https://quazard-global-hub.lovable.app/">
+  <meta property="og:site_name" content="Quazard Animal Gas Burner">
+  <meta property="og:url" content="https://quarzard-animal-gas-burner.netlify.app/">
   <meta property="og:title" content="Quarzard Animal Gas Burner — The Healthy Way to Singe Meat">
   <meta property="og:description" content="Over 4,000 units sold! Switch from toxic kerosene and tyres to the Quarzard Animal Gas Burner. 100% hygienic, cancer-free, and lightning fast. Nationwide delivery across Nigeria.">
-  <meta property="og:image" content="https://quazard-global-hub.lovable.app/photo_2026-10-17_03-13-49.jpg">
+  <meta property="og:image" content="https://quarzard-animal-gas-burner.netlify.app/photo_2026-10-17_03-13-49.jpg">
   <meta property="og:locale" content="en_NG">
   <meta property="product:price:amount" content="24900">
   <meta property="product:price:currency" content="NGN">
@@ -36,11 +36,18 @@
   <meta name="twitter:creator" content="@quazardgloballimited">
   <meta name="twitter:title" content="Quarzard Animal Gas Burner — Clean & Fast Meat Singeing">
   <meta name="twitter:description" content="Over 4,000 units sold! Stop poisoning meat with petrol and tyres. Switch to clean LPG gas singeing. Fast delivery across Nigeria.">
-  <meta name="twitter:image" content="https://quazard-global-hub.lovable.app/photo_2026-10-17_03-13-49.jpg">
+  <meta name="twitter:image" content="https://quarzard-animal-gas-burner.netlify.app/photo_2026-10-17_03-13-49.jpg">
 
   <!-- Favicon and App Icons -->
   <link rel="icon" href="/quazard-mark.png" type="image/png">
   <link rel="apple-touch-icon" href="/quazard-mark.png">
+
+  <!-- Faster fonts on weak networks: preconnect + non-blocking load -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="image" href="/photo_2026-10-17_03-13-49.jpg">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap"></noscript>
 
   <!-- JSON-LD Structured Data: Product, Organization, FAQ -->
   <script type="application/ld+json">
@@ -49,11 +56,11 @@
     "@graph": [
       {
         "@type": "Product",
-        "@id": "https://quazard-global-hub.lovable.app/#product",
+        "@id": "https://quarzard-animal-gas-burner.netlify.app/#product",
         "name": "Quarzard Animal Gas Burner",
         "image": [
-          "https://quazard-global-hub.lovable.app/photo_2026-10-17_03-13-49.jpg",
-          "https://quazard-global-hub.lovable.app/quazard-smoking-tool-banner.jpg"
+          "https://quarzard-animal-gas-burner.netlify.app/photo_2026-10-17_03-13-49.jpg",
+          "https://quarzard-animal-gas-burner.netlify.app/quazard-smoking-tool-banner.jpg"
         ],
         "description": "High-pressure heavy-duty livestock singeing gas burner for abattoirs, slaughterhouses, butchers, and households. Compatible with 3kg, 5kg, 6kg, and 12.5kg gas cylinders for clean, cancer-free meat smoking.",
         "brand": {
@@ -87,12 +94,12 @@
       },
       {
         "@type": "Organization",
-        "@id": "https://quazard-global-hub.lovable.app/#organization",
+        "@id": "https://quarzard-animal-gas-burner.netlify.app/#organization",
         "name": "Quazard Global Limited",
         "legalName": "Quazard Global Limited",
         "taxID": "RC-1756738",
-        "url": "https://quazard-global-hub.lovable.app",
-        "logo": "https://quazard-global-hub.lovable.app/quazard-mark.png",
+        "url": "https://quarzard-animal-gas-burner.netlify.app",
+        "logo": "https://quarzard-animal-gas-burner.netlify.app/quazard-mark.png",
         "contactPoint": {
           "@type": "ContactPoint",
           "telephone": "+2348100367176",
@@ -110,7 +117,7 @@
       },
       {
         "@type": "FAQPage",
-        "@id": "https://quazard-global-hub.lovable.app/#faq",
+        "@id": "https://quarzard-animal-gas-burner.netlify.app/#faq",
         "mainEntity": [
           {
             "@type": "Question",
@@ -245,7 +252,13 @@
     </div>
   </header>
 
-  <main>
+  <!-- Mobile sticky quick-order bar (always one tap from ordering) -->
+  <a href="#order-section" class="sticky-order-bar" aria-label="Go to order form">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+    <span>TAP HERE TO ORDER — Pay When It Arrives</span>
+  </a>
+
+  <main class="page-main">
     <!-- =========================================================
          HERO SECTION (With Featured Live Abattoir Video 1584786.mp4)
          ========================================================= -->
@@ -317,19 +330,18 @@
             </div>
           </div>
 
-          <!-- Hero Media Column: Live Video 1 (1584786.mp4) -->
+          <!-- Hero Media Column: Live Video 1 (1584786.mp4) — loads only when tapped (saves data) -->
           <div class="hero-media-wrap">
             <div class="hero-video-card">
-              <video 
-                src="/1584786.mp4" 
-                controls 
-                autoplay 
-                muted 
-                loop 
-                playsinline 
-                poster="/photo_2026-10-17_03-13-49.jpg"
-                title="Quarzard Animal Gas Burner Live Abattoir Demo">
-              </video>
+              <div class="lazy-video" data-src="/1584786.mp4" data-loop="true"
+                   role="button" tabindex="0"
+                   aria-label="Play live abattoir singeing video"
+                   style="background-image:url('/photo_2026-10-17_03-13-49.jpg');">
+                <button type="button" class="lazy-video-play" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                </button>
+                <span class="lazy-video-hint">Tap to play video</span>
+              </div>
               <div class="video-overlay-banner">
                 <div class="video-caption">
                   <h4>Heavy-Duty Abattoir Singeing in Action</h4>
@@ -438,7 +450,7 @@
         <!-- Official Product Flyer Feature Box -->
         <div class="flyer-feature-box">
           <div class="flyer-img-wrap">
-            <img src="/photo_2026-10-17_03-13-49.jpg" alt="Official Quarzard Animal Gas Burner Flyer showing over 4000 units sold" loading="lazy">
+            <img src="/photo_2026-10-17_03-13-49.jpg" alt="Official Quarzard Animal Gas Burner Flyer showing over 4000 units sold" loading="lazy" decoding="async" width="900" height="1200">
           </div>
           <div class="flyer-text-wrap">
             <span class="eyebrow" style="color:var(--gold);">SWITCH TODAY</span>
@@ -495,13 +507,15 @@
           <!-- Video 1: 1584786.mp4 (Live Abattoir Action) -->
           <div class="video-card">
             <div class="video-player-container">
-              <video 
-                src="/1584786.mp4" 
-                controls 
-                preload="metadata"
-                playsinline
-                title="Heavy-Duty Livestock Singeing Demonstration">
-              </video>
+              <div class="lazy-video" data-src="/1584786.mp4"
+                   role="button" tabindex="0"
+                   aria-label="Play heavy-duty livestock singeing demonstration"
+                   style="background-image:url('/photo_2026-10-17_03-13-49.jpg');">
+                <button type="button" class="lazy-video-play" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                </button>
+                <span class="lazy-video-hint">Tap to play</span>
+              </div>
               <div class="video-badge">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="10 8 16 12 10 16 10 8"/><circle cx="12" cy="12" r="10"/></svg>
                 VIDEO 1: POWER DEMO
@@ -526,13 +540,15 @@
           <!-- Video 2: video_2026-10-17_03-13-23.mp4 (Setup & Flame Adjustment) -->
           <div class="video-card">
             <div class="video-player-container">
-              <video 
-                src="/video_2026-10-17_03-13-23.mp4" 
-                controls 
-                preload="metadata"
-                playsinline
-                title="Easy Gas Cylinder Connection & Flame Precision Control">
-              </video>
+              <div class="lazy-video" data-src="/video_2026-10-17_03-13-23.mp4"
+                   role="button" tabindex="0"
+                   aria-label="Play gas cylinder connection and flame control video"
+                   style="background-image:url('/photo_2026-10-17_03-13-49.jpg');">
+                <button type="button" class="lazy-video-play" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                </button>
+                <span class="lazy-video-hint">Tap to play</span>
+              </div>
               <div class="video-badge">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="10 8 16 12 10 16 10 8"/><circle cx="12" cy="12" r="10"/></svg>
                 VIDEO 2: SETUP & CONTROL
@@ -557,13 +573,15 @@
           <!-- Video 3: video_2026-10-17_03-13-41.mp4 (Finished Meat Quality) -->
           <div class="video-card">
             <div class="video-player-container">
-              <video 
-                src="/video_2026-10-17_03-13-41.mp4" 
-                controls 
-                preload="metadata"
-                playsinline
-                title="100% Clean, Odorless & Golden Meat Results">
-              </video>
+              <div class="lazy-video" data-src="/video_2026-10-17_03-13-41.mp4"
+                   role="button" tabindex="0"
+                   aria-label="Play clean golden meat results video"
+                   style="background-image:url('/photo_2026-10-17_03-13-49.jpg');">
+                <button type="button" class="lazy-video-play" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                </button>
+                <span class="lazy-video-hint">Tap to play</span>
+              </div>
               <div class="video-badge">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="10 8 16 12 10 16 10 8"/><circle cx="12" cy="12" r="10"/></svg>
                 VIDEO 3: MEAT RESULTS
@@ -662,17 +680,18 @@
       <div class="container">
         
         <div class="section-header">
-          <span class="eyebrow" style="color:var(--gold);">DISCOUNT BUNDLE OFFERS</span>
-          <h2>Select Your Cylinder Size & Package</h2>
-          <p>Choose between our 3kg/5kg/6kg cylinder burner package or our heavy-duty 12.5kg cylinder package. Massive discount savings and FREE burners on bundle packages!</p>
+          <span class="eyebrow" style="color:var(--gold);">PRICES &amp; PACKAGES</span>
+          <h2>See the Price &amp; Order in 2 Easy Steps</h2>
+          <p>Pick your cylinder size, open the price list, choose a package, then order. You can pay when it reaches you.</p>
         </div>
 
-        <!-- Cylinder Size Selection Tabs -->
+        <!-- STEP 1: Choose cylinder size (big, clear buttons) -->
+        <p class="price-dropdown-step">Step 1 — Choose your gas cylinder size:</p>
         <div class="pricing-tabs-wrapper">
           <div class="pricing-tabs">
             <button type="button" class="pricing-tab-btn active" id="tabCylinder3kg">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/></svg>
-              <span>For 3kg, 5kg & 6kg Cylinders</span>
+              <span>For 3kg, 5kg &amp; 6kg Cylinders</span>
             </button>
             <button type="button" class="pricing-tab-btn" id="tabCylinder12kg">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
@@ -681,9 +700,16 @@
           </div>
         </div>
 
-        <!-- Dynamic Pricing Grid (Populated by JavaScript) -->
-        <div class="pricing-grid" id="pricingCardsGrid">
-          <!-- Rendered dynamically by src/main.js -->
+        <!-- STEP 2: Dropdown list of prices for the chosen size -->
+        <p class="price-dropdown-step">Step 2 — Tap to open the price list and pick a package:</p>
+        <div class="price-dropdown" id="priceDropdown">
+          <button type="button" class="price-dropdown-toggle" id="priceDropdownToggle" aria-expanded="false" aria-controls="priceDropdownPanel">
+            <span class="price-dropdown-toggle-label" id="priceDropdownLabel">See prices for 3kg, 5kg &amp; 6kg cylinders</span>
+            <svg class="price-dropdown-caret" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="price-dropdown-panel" id="priceDropdownPanel" role="listbox">
+            <!-- Price options rendered dynamically by src/main.js -->
+          </div>
         </div>
 
       </div>
@@ -697,41 +723,31 @@
         <div class="order-wrapper" id="order-form-container">
           
           <div class="order-form-header">
-            <span class="eyebrow" style="color:var(--brand-light);">SECURE CHECKOUT</span>
-            <h2>Place Your Order Now</h2>
-            <p>Fill out the simple form below. We will dispatch your package immediately and confirm your order details directly on WhatsApp.</p>
+            <span class="eyebrow" style="color:var(--brand-light);">EASY ORDER · PAY ON DELIVERY</span>
+            <h2>Order Now — It's Easy</h2>
+            <p>Just fill your name, phone and address. We will call you to confirm and deliver to your door. You can pay when it arrives.</p>
           </div>
 
           <div class="order-form-body">
             <form id="orderForm" novalidate>
               
-              <!-- STEP 1: SELECT CYLINDER SIZE & PACKAGE -->
+              <!-- STEP 1: CONFIRM THE PACKAGE CHOSEN FROM THE DROPDOWN ABOVE -->
               <div class="form-step-title">
                 <span class="step-number">1</span>
-                <span>Select Your Cylinder Size & Package</span>
+                <span>Your Selected Package</span>
               </div>
 
-              <div class="cylinder-radio-group">
-                <label class="cylinder-radio-label selected" id="formRadioCylinder3kgLabel">
-                  <input type="radio" name="cylinder_type" value="3kg_5kg" checked>
-                  <div>
-                    <div>For 3kg, 5kg & 6kg Cylinders</div>
-                    <span style="font-size:0.75rem; color:var(--muted); font-weight:normal;">Standard domestic & small butchery</span>
-                  </div>
-                </label>
-
-                <label class="cylinder-radio-label" id="formRadioCylinder12kgLabel">
-                  <input type="radio" name="cylinder_type" value="12_5kg">
-                  <div>
-                    <div>For 12.5kg Industrial Cylinder</div>
-                    <span style="font-size:0.75rem; color:var(--muted); font-weight:normal;">Commercial slaughterhouse & abattoir</span>
-                  </div>
-                </label>
-              </div>
-
-              <!-- Package Options Radio Cards inside Form -->
-              <div class="package-radio-list" id="formPackagesContainer">
-                <!-- Rendered dynamically by src/main.js -->
+              <!-- Single summary of the choice made in the price dropdown (no second price list) -->
+              <div class="chosen-package-box" id="chosenPackageBox">
+                <div class="chosen-package-info">
+                  <span class="chosen-package-label">You are ordering:</span>
+                  <span class="chosen-package-name" id="chosenPackageName">Buy 2 Units</span>
+                  <span class="chosen-package-cyl" id="chosenPackageCyl">For 3kg, 5kg &amp; 6kg Cylinders</span>
+                </div>
+                <div class="chosen-package-right">
+                  <span class="chosen-package-price" id="chosenPackagePrice">₦40,560</span>
+                  <a href="#pricing-section" class="chosen-package-change">Change price</a>
+                </div>
               </div>
 
               <!-- STEP 2: CUSTOMER CONTACT & DELIVERY ADDRESS -->

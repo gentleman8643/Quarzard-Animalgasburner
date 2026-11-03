@@ -125,12 +125,14 @@ const ACCOUNT_NUMBER = CONFIG.BANK_DETAILS.ACCOUNT_NUMBER || '6804007750';
 document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initCylinderTabs();
-  renderPricingGrid();
+  initPriceDropdown();
+  renderPriceDropdown();
   initFormPackageSelectors();
   initOrderForm();
   initPaymentModal();
   initFloatingContacts();
   initFAQ();
+  initLazyVideos();
 });
 
 /* =========================================================
@@ -163,99 +165,110 @@ function initCylinderTabs() {
   if (tab3kg && tab12kg) {
     tab3kg.addEventListener('click', () => {
       state.selectedCylinder = '3kg_5kg';
+      state.selectedPackage = PACKAGES['3kg_5kg'][1];
       tab3kg.classList.add('active');
       tab12kg.classList.remove('active');
-      renderPricingGrid();
+      renderPriceDropdown();
       syncFormCylinderChoice();
     });
 
     tab12kg.addEventListener('click', () => {
       state.selectedCylinder = '12_5kg';
+      state.selectedPackage = PACKAGES['12_5kg'][1];
       tab12kg.classList.add('active');
       tab3kg.classList.remove('active');
-      renderPricingGrid();
+      renderPriceDropdown();
       syncFormCylinderChoice();
     });
   }
 }
 
 /* =========================================================
-   Render Pricing Packages Grid
+   Price Dropdown (open/close) + Rendering
    ========================================================= */
-function renderPricingGrid() {
-  const container = document.getElementById('pricingCardsGrid');
-  if (!container) return;
+function initPriceDropdown() {
+  const dropdown = document.getElementById('priceDropdown');
+  const toggle = document.getElementById('priceDropdownToggle');
+  if (!dropdown || !toggle) return;
+
+  toggle.addEventListener('click', () => {
+    const isOpen = dropdown.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  // Close when tapping outside
+  document.addEventListener('click', (e) => {
+    if (!dropdown.contains(e.target)) {
+      dropdown.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+function updatePriceDropdownLabel() {
+  const label = document.getElementById('priceDropdownLabel');
+  if (!label) return;
+  label.textContent = state.selectedCylinder === '3kg_5kg'
+    ? 'See prices for 3kg, 5kg & 6kg cylinders'
+    : 'See prices for 12.5kg industrial cylinder';
+}
+
+function renderPriceDropdown() {
+  const panel = document.getElementById('priceDropdownPanel');
+  updatePriceDropdownLabel();
+  if (!panel) return;
 
   const packages = PACKAGES[state.selectedCylinder];
-  container.innerHTML = '';
+  panel.innerHTML = '';
 
-  packages.forEach((pkg, index) => {
+  packages.forEach((pkg) => {
     const isSelected = state.selectedPackage.id === pkg.id;
-    const isPopular = pkg.badge.includes('Popular');
-    const isBestValue = pkg.badge.includes('Best');
+    const sub = pkg.freeOffer || pkg.savings || '';
+    const badge = pkg.badge ? `<span class="price-option-badge">${pkg.badge}</span>` : '';
 
-    const card = document.createElement('div');
-    card.className = `package-card ${isPopular ? 'popular' : ''} ${isBestValue ? 'best-value' : ''} ${isSelected ? 'selected' : ''}`;
-
-    let badgeHTML = '';
-    if (pkg.badge) {
-      const bClass = isPopular ? 'popular-badge' : 'value-badge';
-      badgeHTML = `<span class="package-badge ${bClass}">${pkg.badge}</span>`;
-    }
-
-    let extraHighlight = '';
-    if (pkg.savings) {
-      extraHighlight = `<div class="package-savings">${pkg.savings}</div>`;
-    } else if (pkg.freeOffer) {
-      extraHighlight = `<div class="package-free-offer">${pkg.freeOffer}</div>`;
-    }
-
-    card.innerHTML = `
-      ${badgeHTML}
-      <h3 class="package-title">${pkg.title}</h3>
-      <div class="package-cylinder">${pkg.cylinder}</div>
-      <div class="package-price-wrap">
-        <div class="package-price">${pkg.priceFormatted}</div>
-        ${extraHighlight}
-      </div>
-      <ul class="package-perks">
-        <li>
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-          <strong>${pkg.units}</strong>
-        </li>
-        <li>
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-          Heavy-duty Brass Regulator Valve
-        </li>
-        <li>
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-          Free High-Pressure Hose Included
-        </li>
-        <li>
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-          Nationwide Delivery Available
-        </li>
-      </ul>
-      <button type="button" class="btn-package-select" data-id="${pkg.id}">
-        <span>Select This Package</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-      </button>
+    const option = document.createElement('button');
+    option.type = 'button';
+    option.className = `price-option ${isSelected ? 'selected' : ''}`;
+    option.setAttribute('role', 'option');
+    option.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+    option.innerHTML = `
+      <span class="price-option-main">
+        <span class="price-option-title">${pkg.title}${badge}</span>
+        ${sub ? `<span class="price-option-sub">${sub}</span>` : ''}
+      </span>
+      <span class="price-option-price">${pkg.priceFormatted}</span>
     `;
-
-    const selectBtn = card.querySelector('.btn-package-select');
-    selectBtn.addEventListener('click', () => {
+    option.addEventListener('click', (e) => {
+      e.stopPropagation();
       selectPackage(pkg);
-      scrollToOrderForm();
     });
-
-    container.appendChild(card);
+    panel.appendChild(option);
   });
+
+  // Order button at the bottom of the dropdown
+  const orderBtn = document.createElement('button');
+  orderBtn.type = 'button';
+  orderBtn.className = 'price-dropdown-order-btn';
+  orderBtn.innerHTML = `
+    <span>Order ${state.selectedPackage.title} — ${state.selectedPackage.priceFormatted}</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+  `;
+  orderBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const dropdown = document.getElementById('priceDropdown');
+    const toggle = document.getElementById('priceDropdownToggle');
+    if (dropdown) dropdown.classList.remove('open');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    syncFormCylinderChoice();
+    scrollToOrderForm();
+  });
+  panel.appendChild(orderBtn);
 }
 
 function selectPackage(pkg) {
   state.selectedPackage = pkg;
-  renderPricingGrid();
-  renderFormPackageRadioCards();
+  renderPriceDropdown();
+  renderChosenPackageBox();
   updateOrderSummary();
 }
 
@@ -267,96 +280,28 @@ function scrollToOrderForm() {
 }
 
 /* =========================================================
-   Order Form: Package & Cylinder Sync
+   Order Form: show the single package chosen in the dropdown.
+   (No second price list inside the form.)
    ========================================================= */
 function initFormPackageSelectors() {
-  const radioCylinders = document.querySelectorAll('input[name="cylinder_type"]');
-  radioCylinders.forEach(radio => {
-    radio.addEventListener('change', (e) => {
-      state.selectedCylinder = e.target.value;
-      // Default to index 1 of new list or match
-      state.selectedPackage = PACKAGES[state.selectedCylinder][1];
-      
-      // Sync tab buttons
-      const tab3kg = document.getElementById('tabCylinder3kg');
-      const tab12kg = document.getElementById('tabCylinder12kg');
-      if (tab3kg && tab12kg) {
-        if (state.selectedCylinder === '3kg_5kg') {
-          tab3kg.classList.add('active');
-          tab12kg.classList.remove('active');
-        } else {
-          tab12kg.classList.add('active');
-          tab3kg.classList.remove('active');
-        }
-      }
-
-      updateCylinderRadioClasses();
-      renderPricingGrid();
-      renderFormPackageRadioCards();
-      updateOrderSummary();
-    });
-  });
-
-  renderFormPackageRadioCards();
+  renderChosenPackageBox();
 }
 
+// Kept for compatibility with the dropdown's order button.
 function syncFormCylinderChoice() {
-  const radio = document.querySelector(`input[name="cylinder_type"][value="${state.selectedCylinder}"]`);
-  if (radio) {
-    radio.checked = true;
-    updateCylinderRadioClasses();
-    state.selectedPackage = PACKAGES[state.selectedCylinder][1];
-    renderFormPackageRadioCards();
-    updateOrderSummary();
-  }
+  renderChosenPackageBox();
+  updateOrderSummary();
 }
 
-function updateCylinderRadioClasses() {
-  document.querySelectorAll('.cylinder-radio-label').forEach(label => {
-    const input = label.querySelector('input');
-    if (input && input.checked) {
-      label.classList.add('selected');
-    } else {
-      label.classList.remove('selected');
-    }
-  });
-}
+function renderChosenPackageBox() {
+  const pkg = state.selectedPackage;
+  const nameEl = document.getElementById('chosenPackageName');
+  const cylEl = document.getElementById('chosenPackageCyl');
+  const priceEl = document.getElementById('chosenPackagePrice');
 
-function renderFormPackageRadioCards() {
-  const container = document.getElementById('formPackagesContainer');
-  if (!container) return;
-
-  const packages = PACKAGES[state.selectedCylinder];
-  container.innerHTML = '';
-
-  packages.forEach(pkg => {
-    const isSelected = state.selectedPackage.id === pkg.id;
-    const label = document.createElement('label');
-    label.className = `package-radio-card ${isSelected ? 'selected' : ''}`;
-
-    let tagHtml = pkg.tag ? `<span class="package-radio-tag">${pkg.tag}</span>` : '';
-
-    label.innerHTML = `
-      <div class="package-radio-left">
-        <input type="radio" name="selected_bundle" value="${pkg.id}" ${isSelected ? 'checked' : ''}>
-        <div>
-          <span class="package-radio-name">${pkg.title}</span>
-          ${tagHtml}
-        </div>
-      </div>
-      <div class="package-radio-price">${pkg.priceFormatted}</div>
-    `;
-
-    label.querySelector('input').addEventListener('change', () => {
-      state.selectedPackage = pkg;
-      document.querySelectorAll('.package-radio-card').forEach(c => c.classList.remove('selected'));
-      label.classList.add('selected');
-      renderPricingGrid();
-      updateOrderSummary();
-    });
-
-    container.appendChild(label);
-  });
+  if (nameEl) nameEl.textContent = pkg.title;
+  if (cylEl) cylEl.textContent = pkg.cylinder;
+  if (priceEl) priceEl.textContent = pkg.priceFormatted;
 }
 
 function updateOrderSummary() {
@@ -698,3 +643,48 @@ function initFAQ() {
   });
 }
 
+
+/* =========================================================
+   Lazy Video Loader
+   Videos download ONLY when the user taps the poster.
+   This keeps the first page load fast and light on data.
+   ========================================================= */
+function initLazyVideos() {
+  const placeholders = document.querySelectorAll('.lazy-video');
+
+  placeholders.forEach((holder) => {
+    const load = () => {
+      const src = holder.getAttribute('data-src');
+      if (!src || holder.dataset.loaded === 'true') return;
+      holder.dataset.loaded = 'true';
+
+      const video = document.createElement('video');
+      video.src = src;
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.setAttribute('playsinline', '');
+      video.preload = 'auto';
+      if (holder.getAttribute('data-loop') === 'true') {
+        video.loop = true;
+        video.muted = true; // required for autoplay-with-loop on mobile
+      }
+
+      holder.innerHTML = '';
+      holder.style.cursor = 'default';
+      holder.appendChild(video);
+      const play = video.play();
+      if (play && typeof play.catch === 'function') {
+        play.catch(() => { /* user can press the native control */ });
+      }
+    };
+
+    holder.addEventListener('click', load);
+    holder.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        load();
+      }
+    });
+  });
+}

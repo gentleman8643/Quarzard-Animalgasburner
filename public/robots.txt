@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://quazard-global-hub.lovable.app/sitemap.xml
+Sitemap: https://quarzard-animal-gas-burner.netlify.app/sitemap.xml
