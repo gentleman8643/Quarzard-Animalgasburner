@@ -2623,131 +2623,6 @@ h1, h2, h3, h4, .font-display {
 }
 
 /* =========================================================
-   PRICE DROPDOWN — tap cylinder size, then open a dropdown
-   listing each package price. Clearer for first-time buyers.
-   ========================================================= */
-.price-dropdown-step {
-  text-align: center;
-  color: #ffffff;
-  font-weight: 800;
-  font-size: 1.05rem;
-  margin: 0 0 14px;
-}
-.price-dropdown {
-  max-width: 620px;
-  margin: 0 auto;
-}
-.price-dropdown-toggle {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  background: #ffffff;
-  color: var(--ink);
-  border: 2px solid var(--brand);
-  border-radius: var(--radius-lg);
-  padding: 18px 22px;
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  font-weight: 900;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  transition: var(--transition);
-}
-.price-dropdown-toggle:hover { background: #f4fbf7; }
-.price-dropdown-caret {
-  color: var(--brand);
-  flex-shrink: 0;
-  transition: transform 0.25s ease;
-}
-.price-dropdown.open .price-dropdown-caret { transform: rotate(180deg); }
-
-.price-dropdown-panel {
-  display: none;
-  margin-top: 10px;
-  background: var(--ink-card);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: var(--radius-lg);
-  padding: 10px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  animation: slideDown 0.2s ease-out;
-}
-.price-dropdown.open .price-dropdown-panel { display: block; }
-
-.price-option {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  width: 100%;
-  text-align: left;
-  padding: 16px 18px;
-  border-radius: var(--radius-md);
-  border: 2px solid transparent;
-  color: #ffffff;
-  transition: var(--transition);
-}
-.price-option + .price-option { margin-top: 8px; }
-.price-option:hover { background: rgba(255, 255, 255, 0.06); }
-.price-option.selected {
-  border-color: var(--brand);
-  background: rgba(19, 156, 91, 0.14);
-}
-.price-option-main {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.price-option-title {
-  font-weight: 800;
-  font-size: 1.02rem;
-}
-.price-option-sub {
-  font-size: 0.82rem;
-  color: #4ade80;
-  font-weight: 700;
-}
-.price-option-price {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 900;
-  color: var(--gold);
-  white-space: nowrap;
-}
-.price-option-badge {
-  display: inline-block;
-  margin-left: 8px;
-  font-size: 0.68rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 2px 8px;
-  border-radius: var(--radius-full);
-  background: var(--gold);
-  color: var(--gold-foreground);
-  vertical-align: middle;
-}
-.price-dropdown-order-btn {
-  width: 100%;
-  margin-top: 12px;
-  padding: 16px;
-  border-radius: var(--radius-full);
-  background: linear-gradient(135deg, #139c5b 0%, #0d7f49 100%);
-  color: #ffffff;
-  font-weight: 900;
-  font-size: 1.05rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  box-shadow: 0 10px 25px rgba(19, 156, 91, 0.4);
-  transition: var(--transition);
-}
-.price-dropdown-order-btn:hover { transform: translateY(-2px); }
-
-/* =========================================================
    EASIER FOR EVERYONE — bigger taps, clearer focus rings.
    Helps older users and small/cheap phones.
    ========================================================= */
@@ -2859,3 +2734,33 @@ input, select, textarea {
   .chosen-package-right { align-items: flex-start; }
   .chosen-package-price { font-size: 1.45rem; }
 }
+
+/* =========================================================
+   PLAIN PRICE TOGGLE BUTTONS (order form, Step 1)
+   ========================================================= */
+.price-toggle-list { display: flex; flex-direction: column; gap: 10px; }
+.price-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 14px 16px;
+  background: #ffffff;
+  color: var(--foreground);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+}
+.price-toggle-price { font-weight: 800; white-space: nowrap; }
+.price-toggle.on {
+  border-color: var(--foreground);
+  background: var(--surface);
+  font-weight: 800;
+}
+.price-toggle.on .price-toggle-text::before { content: "\2713  "; }
+
+/* Make sure the hidden attribute always hides (prices stay hidden until a cylinder is chosen) */
+[hidden] { display: none !important; }

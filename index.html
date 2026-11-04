@@ -215,7 +215,6 @@
         <a href="#why-switch" class="nav-link">Why Switch</a>
         <a href="#video-demos" class="nav-link">Live Demos</a>
         <a href="#features" class="nav-link">Features</a>
-        <a href="#pricing-section" class="nav-link">Pricing Packages</a>
         <a href="#order-section" class="nav-link">Place Order</a>
         <a href="#faq-section" class="nav-link">FAQ</a>
         <a href="#contact-section" class="nav-link">Contact Us</a>
@@ -241,7 +240,6 @@
       <a href="#why-switch" class="nav-link">Why Switch</a>
       <a href="#video-demos" class="nav-link">Live Demos</a>
       <a href="#features" class="nav-link">Features</a>
-      <a href="#pricing-section" class="nav-link">Pricing Packages</a>
       <a href="#order-section" class="nav-link">Place Order Now</a>
       <a href="#faq-section" class="nav-link">FAQ</a>
       <a href="#contact-section" class="nav-link">Contact Us</a>
@@ -674,48 +672,6 @@
     </section>
 
     <!-- =========================================================
-         PRICING & BUNDLE PACKAGES SECTION
-         ========================================================= -->
-    <section class="pricing-section" id="pricing-section">
-      <div class="container">
-        
-        <div class="section-header">
-          <span class="eyebrow" style="color:var(--gold);">PRICES &amp; PACKAGES</span>
-          <h2>See the Price &amp; Order in 2 Easy Steps</h2>
-          <p>Pick your cylinder size, open the price list, choose a package, then order. You can pay when it reaches you.</p>
-        </div>
-
-        <!-- STEP 1: Choose cylinder size (big, clear buttons) -->
-        <p class="price-dropdown-step">Step 1 — Choose your gas cylinder size:</p>
-        <div class="pricing-tabs-wrapper">
-          <div class="pricing-tabs">
-            <button type="button" class="pricing-tab-btn active" id="tabCylinder3kg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/></svg>
-              <span>For 3kg, 5kg &amp; 6kg Cylinders</span>
-            </button>
-            <button type="button" class="pricing-tab-btn" id="tabCylinder12kg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>
-              <span>For 12.5kg Industrial Cylinder</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- STEP 2: Dropdown list of prices for the chosen size -->
-        <p class="price-dropdown-step">Step 2 — Tap to open the price list and pick a package:</p>
-        <div class="price-dropdown" id="priceDropdown">
-          <button type="button" class="price-dropdown-toggle" id="priceDropdownToggle" aria-expanded="false" aria-controls="priceDropdownPanel">
-            <span class="price-dropdown-toggle-label" id="priceDropdownLabel">See prices for 3kg, 5kg &amp; 6kg cylinders</span>
-            <svg class="price-dropdown-caret" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-          </button>
-          <div class="price-dropdown-panel" id="priceDropdownPanel" role="listbox">
-            <!-- Price options rendered dynamically by src/main.js -->
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- =========================================================
          INTERACTIVE ORDER FORM SECTION
          ========================================================= -->
     <section class="order-section" id="order-section">
@@ -731,22 +687,26 @@
           <div class="order-form-body">
             <form id="orderForm" novalidate>
               
-              <!-- STEP 1: CONFIRM THE PACKAGE CHOSEN FROM THE DROPDOWN ABOVE -->
+              <!-- STEP 1: CHOOSE CYLINDER TYPE, THEN PICK A PRICE -->
               <div class="form-step-title">
                 <span class="step-number">1</span>
-                <span>Your Selected Package</span>
+                <span>Choose Your Package</span>
               </div>
 
-              <!-- Single summary of the choice made in the price dropdown (no second price list) -->
-              <div class="chosen-package-box" id="chosenPackageBox">
-                <div class="chosen-package-info">
-                  <span class="chosen-package-label">You are ordering:</span>
-                  <span class="chosen-package-name" id="chosenPackageName">Buy 2 Units</span>
-                  <span class="chosen-package-cyl" id="chosenPackageCyl">For 3kg, 5kg &amp; 6kg Cylinders</span>
-                </div>
-                <div class="chosen-package-right">
-                  <span class="chosen-package-price" id="chosenPackagePrice">₦40,560</span>
-                  <a href="#pricing-section" class="chosen-package-change">Change price</a>
+              <div class="form-group">
+                <label class="form-label" for="cylinderSelect">Choose your cylinder type <span class="required">*</span></label>
+                <select id="cylinderSelect" name="cylinder_type" class="form-select" required>
+                  <option value="" selected>-- Choose your cylinder type --</option>
+                  <option value="3kg_5kg">3kg, 5kg or 6kg Cylinder (small)</option>
+                  <option value="12_5kg">12.5kg Cylinder (big)</option>
+                </select>
+              </div>
+
+              <!-- Prices appear here after the cylinder type is chosen -->
+              <div class="form-group" id="priceChoiceGroup" hidden>
+                <span class="form-label">Tap the number of burners you want <span class="required">*</span></span>
+                <div class="price-toggle-list" id="priceToggleList" role="radiogroup" aria-label="Number of burners and price">
+                  <!-- Rendered by src/main.js -->
                 </div>
               </div>
 
@@ -878,11 +838,11 @@
               <div class="order-summary-box">
                 <div class="order-summary-row">
                   <span>Selected Package:</span>
-                  <strong id="summaryPkgName">Buy 2 Units (For 3kg, 5kg & 6kg Cylinders)</strong>
+                  <strong id="summaryPkgName">Not chosen yet</strong>
                 </div>
                 <div class="order-summary-row">
                   <span>Package Price:</span>
-                  <strong id="summaryPkgPrice">₦40,560</strong>
+                  <strong id="summaryPkgPrice">-</strong>
                 </div>
                 <div class="order-summary-row">
                   <span>Delivery Fee:</span>
@@ -890,7 +850,7 @@
                 </div>
                 <div class="order-summary-row total-row">
                   <span>Total Payable:</span>
-                  <span class="total-amount" id="summaryTotalAmount">₦40,560</span>
+                  <span class="total-amount" id="summaryTotalAmount">-</span>
                 </div>
               </div>
 

@@ -111,8 +111,8 @@ export const PACKAGES = {
 
 // Global App State
 const state = {
-  selectedCylinder: '3kg_5kg', // or '12_5kg'
-  selectedPackage: PACKAGES['3kg_5kg'][1], // default 2 units
+  selectedCylinder: '', // '3kg_5kg' or '12_5kg'
+  selectedPackage: null, // chosen by the customer
   paymentPreference: 'Payment on Delivery',
   latestOrder: null
 };
@@ -124,9 +124,6 @@ const ACCOUNT_NUMBER = CONFIG.BANK_DETAILS.ACCOUNT_NUMBER || '6804007750';
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
-  initCylinderTabs();
-  initPriceDropdown();
-  renderPriceDropdown();
   initFormPackageSelectors();
   initOrderForm();
   initPaymentModal();
@@ -156,164 +153,77 @@ function initMobileMenu() {
 }
 
 /* =========================================================
-   Cylinder Size Tabs in Pricing Section
-   ========================================================= */
-function initCylinderTabs() {
-  const tab3kg = document.getElementById('tabCylinder3kg');
-  const tab12kg = document.getElementById('tabCylinder12kg');
-
-  if (tab3kg && tab12kg) {
-    tab3kg.addEventListener('click', () => {
-      state.selectedCylinder = '3kg_5kg';
-      state.selectedPackage = PACKAGES['3kg_5kg'][1];
-      tab3kg.classList.add('active');
-      tab12kg.classList.remove('active');
-      renderPriceDropdown();
-      syncFormCylinderChoice();
-    });
-
-    tab12kg.addEventListener('click', () => {
-      state.selectedCylinder = '12_5kg';
-      state.selectedPackage = PACKAGES['12_5kg'][1];
-      tab12kg.classList.add('active');
-      tab3kg.classList.remove('active');
-      renderPriceDropdown();
-      syncFormCylinderChoice();
-    });
-  }
-}
-
-/* =========================================================
-   Price Dropdown (open/close) + Rendering
-   ========================================================= */
-function initPriceDropdown() {
-  const dropdown = document.getElementById('priceDropdown');
-  const toggle = document.getElementById('priceDropdownToggle');
-  if (!dropdown || !toggle) return;
-
-  toggle.addEventListener('click', () => {
-    const isOpen = dropdown.classList.toggle('open');
-    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-  });
-
-  // Close when tapping outside
-  document.addEventListener('click', (e) => {
-    if (!dropdown.contains(e.target)) {
-      dropdown.classList.remove('open');
-      toggle.setAttribute('aria-expanded', 'false');
-    }
-  });
-}
-
-function updatePriceDropdownLabel() {
-  const label = document.getElementById('priceDropdownLabel');
-  if (!label) return;
-  label.textContent = state.selectedCylinder === '3kg_5kg'
-    ? 'See prices for 3kg, 5kg & 6kg cylinders'
-    : 'See prices for 12.5kg industrial cylinder';
-}
-
-function renderPriceDropdown() {
-  const panel = document.getElementById('priceDropdownPanel');
-  updatePriceDropdownLabel();
-  if (!panel) return;
-
-  const packages = PACKAGES[state.selectedCylinder];
-  panel.innerHTML = '';
-
-  packages.forEach((pkg) => {
-    const isSelected = state.selectedPackage.id === pkg.id;
-    const sub = pkg.freeOffer || pkg.savings || '';
-    const badge = pkg.badge ? `<span class="price-option-badge">${pkg.badge}</span>` : '';
-
-    const option = document.createElement('button');
-    option.type = 'button';
-    option.className = `price-option ${isSelected ? 'selected' : ''}`;
-    option.setAttribute('role', 'option');
-    option.setAttribute('aria-selected', isSelected ? 'true' : 'false');
-    option.innerHTML = `
-      <span class="price-option-main">
-        <span class="price-option-title">${pkg.title}${badge}</span>
-        ${sub ? `<span class="price-option-sub">${sub}</span>` : ''}
-      </span>
-      <span class="price-option-price">${pkg.priceFormatted}</span>
-    `;
-    option.addEventListener('click', (e) => {
-      e.stopPropagation();
-      selectPackage(pkg);
-    });
-    panel.appendChild(option);
-  });
-
-  // Order button at the bottom of the dropdown
-  const orderBtn = document.createElement('button');
-  orderBtn.type = 'button';
-  orderBtn.className = 'price-dropdown-order-btn';
-  orderBtn.innerHTML = `
-    <span>Order ${state.selectedPackage.title} — ${state.selectedPackage.priceFormatted}</span>
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-  `;
-  orderBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const dropdown = document.getElementById('priceDropdown');
-    const toggle = document.getElementById('priceDropdownToggle');
-    if (dropdown) dropdown.classList.remove('open');
-    if (toggle) toggle.setAttribute('aria-expanded', 'false');
-    syncFormCylinderChoice();
-    scrollToOrderForm();
-  });
-  panel.appendChild(orderBtn);
-}
-
-function selectPackage(pkg) {
-  state.selectedPackage = pkg;
-  renderPriceDropdown();
-  renderChosenPackageBox();
-  updateOrderSummary();
-}
-
-function scrollToOrderForm() {
-  const formSection = document.getElementById('order-form-container');
-  if (formSection) {
-    formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-}
-
-/* =========================================================
-   Order Form: show the single package chosen in the dropdown.
-   (No second price list inside the form.)
+   Order Form Step 1: choose cylinder type (plain select),
+   then prices appear as simple toggle buttons.
    ========================================================= */
 function initFormPackageSelectors() {
-  renderChosenPackageBox();
+  const select = document.getElementById('cylinderSelect');
+  if (!select) return;
+
+  select.addEventListener('change', () => {
+    state.selectedCylinder = select.value;
+    state.selectedPackage = null;
+    renderPriceToggles();
+    updateOrderSummary();
+  });
 }
 
-// Kept for compatibility with the dropdown's order button.
-function syncFormCylinderChoice() {
-  renderChosenPackageBox();
-  updateOrderSummary();
-}
+function renderPriceToggles() {
+  const group = document.getElementById('priceChoiceGroup');
+  const list = document.getElementById('priceToggleList');
+  if (!group || !list) return;
 
-function renderChosenPackageBox() {
-  const pkg = state.selectedPackage;
-  const nameEl = document.getElementById('chosenPackageName');
-  const cylEl = document.getElementById('chosenPackageCyl');
-  const priceEl = document.getElementById('chosenPackagePrice');
+  const packages = PACKAGES[state.selectedCylinder];
+  if (!packages) {
+    group.hidden = true;
+    list.innerHTML = '';
+    return;
+  }
 
-  if (nameEl) nameEl.textContent = pkg.title;
-  if (cylEl) cylEl.textContent = pkg.cylinder;
-  if (priceEl) priceEl.textContent = pkg.priceFormatted;
+  group.hidden = false;
+  list.innerHTML = '';
+
+  packages.forEach((pkg) => {
+    const isOn = !!state.selectedPackage && state.selectedPackage.id === pkg.id;
+    const note = pkg.freeOffer || pkg.savings || '';
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'price-toggle' + (isOn ? ' on' : '');
+    btn.setAttribute('role', 'radio');
+    btn.setAttribute('aria-checked', isOn ? 'true' : 'false');
+
+    const left = document.createElement('span');
+    left.className = 'price-toggle-text';
+    left.textContent = pkg.title + (note ? ' - ' + note : '');
+
+    const right = document.createElement('span');
+    right.className = 'price-toggle-price';
+    right.textContent = pkg.priceFormatted;
+
+    btn.appendChild(left);
+    btn.appendChild(right);
+
+    btn.addEventListener('click', () => {
+      state.selectedPackage = pkg;
+      renderPriceToggles();
+      updateOrderSummary();
+    });
+
+    list.appendChild(btn);
+  });
 }
 
 function updateOrderSummary() {
   const summaryPkgName = document.getElementById('summaryPkgName');
   const summaryPkgPrice = document.getElementById('summaryPkgPrice');
   const summaryTotalAmount = document.getElementById('summaryTotalAmount');
+  const pkg = state.selectedPackage;
 
-  if (summaryPkgName) summaryPkgName.textContent = `${state.selectedPackage.title} (${state.selectedPackage.cylinder})`;
-  if (summaryPkgPrice) summaryPkgPrice.textContent = state.selectedPackage.priceFormatted;
-  if (summaryTotalAmount) summaryTotalAmount.textContent = state.selectedPackage.priceFormatted;
+  if (summaryPkgName) summaryPkgName.textContent = pkg ? `${pkg.title} (${pkg.cylinder})` : 'Not chosen yet';
+  if (summaryPkgPrice) summaryPkgPrice.textContent = pkg ? pkg.priceFormatted : '-';
+  if (summaryTotalAmount) summaryTotalAmount.textContent = pkg ? pkg.priceFormatted : '-';
 }
-
 /* =========================================================
    Order Form Submission & Validation
    ========================================================= */
@@ -345,6 +255,13 @@ function initOrderForm() {
     const stateVal = form.state.value.trim();
     const country = form.country.value.trim();
     const notes = form.order_notes ? form.order_notes.value.trim() : '';
+
+    if (!state.selectedPackage) {
+      alert('Please choose your cylinder type, then tap the number of burners you want.');
+      const sel = document.getElementById('cylinderSelect');
+      if (sel) sel.focus();
+      return;
+    }
 
     if (!fullName || !phone || !whatsapp || !address || !city || !stateVal) {
       alert('Please fill in all required fields marked with an asterisk (*).');
